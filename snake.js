@@ -62,7 +62,7 @@ class Snake {
             return true;
         }
 
-        if (!((0 <= head_position[0] && head_position[0] < this.manager.multipliers["board_size"]) && (0 <= head_position[1] && head_position[1] < this.manager.multipliers["board_size"]))) {
+        if (!((0 <= head_position[0] && head_position[0] < this.board_size) && (0 <= head_position[1] && head_position[1] < this.board_size))) {
             console.log("In Wall");
             return true;
         }
@@ -90,7 +90,7 @@ class GameManager {
         this.buttons = [];
         this.buttons.push([new PurchaseButton(4, 2.4, 100), "score_multiplier", "Upgrade Score Multiplier"]);
         this.buttons.push([new PurchaseButton(10, 3.2, 100), "score_exponent", "Upgrade Score Exponent"]);
-        this.buttons.push([new PurchaseButton(1000, 10**8, 3), "board_size", "Upgrade Score per Move"]);
+        this.buttons.push([new PurchaseButton(1000, 10**8, 3), "board_size", "Upgrade Board Size"]);
         this.buttons.push([new PurchaseButton(1000000, 0, 1), "stage_two_button", "Unlock Stage Two"]);
         this.buttons.push([new PurchaseButton(1000000, 0, 1), "distance_to_food_unlock", "Unlock Distance to Food"]);
         this.buttons.push([new PurchaseButton(100000000, 0, 1), "wall_detection_unlock", "Unlock Wall and Body Detection"]);
@@ -224,9 +224,10 @@ class GameManager {
                 }
                 break;
 
-            case "points_per_move":
+            case "board_size":
                 if (button[0].on_click()){
-                    this.multipliers["points_per_move"] += 0.0001;
+                    this.multipliers["board_size"] *= 2;
+                    this.snake.board_size = this.multipliers["board_size"];
                 }
                 break;
             
@@ -323,7 +324,7 @@ class GameManager {
     }
 
     load_data() {
-        this.currency = 10 ** 40; //to get all upgrades
+        this.currency = 10 ** 200; //to get all upgrades
 
         //retrieve manager state
         var manager_state_data = localStorage.getItem("manager_state");
@@ -390,7 +391,9 @@ function round_to_dp(places, number) {
 
 function display_logarithmically(number) {
 
-    if (number >= 1000 || number < 0.01) {
+    if (number == 0) {
+        return 0;
+    } else if (number >= 1000 || number < 0.01) {
         const exponent = Math.floor(Math.log10(number));
         const mantissa = round_to_dp(2, number / (10**exponent));
         return `${mantissa}e${exponent}`;
@@ -434,6 +437,10 @@ function main() {
     const snake = new Snake(board_size);
     manager = new GameManager(snake);
 
+    if (localStorage.getItem("manager_state") === null) {
+        manager.clear_data();
+    }
+
     if (typeof(Storage) !== undefined) {
         manager.load_data();
     }
@@ -465,8 +472,6 @@ function gameLoop(running, food_position) {
 
         running = !manager.snake.move(has_eaten);
         manager.snake.draw(food_position);
-
-        manager.snake.score += manager.multipliers["points_per_move"];
         
         manager.update_GUI();
 
