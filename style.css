@@ -1,8 +1,39 @@
 html {
-    background-color: rgb(34, 34, 34);
+    background-color: #222222;
     color: white;
 }
 
 canvas {
     border: 1px solid white;
+}
+
+#game_container {
+    display: flex;
+}
+
+#game_display {
+    flex: 1;
+}
+
+#shop_display {
+    flex: 1;
+}
+
+#purchase_buttons {
+    width: 580px;
+}
+
+#purchase_buttons button {
+    width: 180px;
+    height: 120px;
+    background-color: #222222;
+    color: white;
+    border-color: #FF0000;
+    border-width: 3px;
+    border-radius: 10%;
+}
+
+#start_game_button {
+    width: 60px;
+    height: 34px;
 }
