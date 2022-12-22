@@ -14,7 +14,7 @@ class Snake {
 
     draw(food_position){
 
-        const scale = 400 / this.board_size;
+        const scale = 320 / this.board_size;
 
         var canvas = document.getElementById("game_display_canvas");
         var ctx = canvas.getContext("2d");
@@ -62,7 +62,7 @@ class Snake {
             return true;
         }
 
-        if (!((0 <= head_position[0] && head_position[0] < this.board_size) && (0 <= head_position[1] && head_position[1] < this.board_size))) {
+        if (!((0 <= head_position[0] && head_position[0] < this.manager.multipliers["board_size"]) && (0 <= head_position[1] && head_position[1] < this.manager.multipliers["board_size"]))) {
             console.log("In Wall");
             return true;
         }
@@ -79,24 +79,23 @@ class GameManager {
 
     constructor(snake) {
         this.snake = snake;
-        this.board_size = this.snake.board_size;
         this.currency = 0;
 
         this.game_in_progress = false;
         this.stage = 1;
 
-        this.multipliers = {"score_multiplier": 1, "score_exponent": 1, "points_per_move": 0};
+        this.multipliers = {"score_multiplier": 1, "score_exponent": 1, "board_size": 10};
         this.autopilots = {"distance_to_food": false, "wall_detection": false, "area_detection": false};
 
         this.buttons = [];
-        this.buttons.push([new PurchaseButton(4, 2.4), "score_multiplier", "Upgrade Score Multiplier"]);
-        this.buttons.push([new PurchaseButton(10, 3.2), "score_exponent", "Upgrade Score Exponent"]);
-        this.buttons.push([new PurchaseButton(1, 2), "points_per_move", "Upgrade Score per Move"]);
-        this.buttons.push([new PurchaseButton(1000000, 0), "stage_two_button", "Unlock Stage Two"]);
-        this.buttons.push([new PurchaseButton(1000000, 0), "distance_to_food_unlock", "Unlock Distance to Food"]);
-        this.buttons.push([new PurchaseButton(100000000, 0), "wall_detection_unlock", "Unlock Wall and Body Detection"]);
-        this.buttons.push([new PurchaseButton(10000000000, 0), "area_detection_unlock", "Unlock Area Detection"]);
-        this.buttons.push([new PurchaseButton(1000000000000, 0), "stage_three_button", "Unlock Stage Three"]);
+        this.buttons.push([new PurchaseButton(4, 2.4, 100), "score_multiplier", "Upgrade Score Multiplier"]);
+        this.buttons.push([new PurchaseButton(10, 3.2, 100), "score_exponent", "Upgrade Score Exponent"]);
+        this.buttons.push([new PurchaseButton(1000, 10**8, 3), "board_size", "Upgrade Score per Move"]);
+        this.buttons.push([new PurchaseButton(1000000, 0, 1), "stage_two_button", "Unlock Stage Two"]);
+        this.buttons.push([new PurchaseButton(1000000, 0, 1), "distance_to_food_unlock", "Unlock Distance to Food"]);
+        this.buttons.push([new PurchaseButton(100000000, 0, 1), "wall_detection_unlock", "Unlock Wall and Body Detection"]);
+        this.buttons.push([new PurchaseButton(10000000000, 0, 1), "area_detection_unlock", "Unlock Area Detection"]);
+        this.buttons.push([new PurchaseButton(1000000000000, 0, 1), "stage_three_button", "Unlock Stage Three"]);
 
         document.addEventListener("keydown", this.on_key_press.bind(this));
     }
@@ -133,6 +132,7 @@ class GameManager {
         var costs = [0, 0, 0, 0];
 
         const head_position = this.snake.position.at(-1); 
+        const board_size = this.multipliers["board_size"]
 
         for (var i = 0; i < 4; i++) {
 
@@ -146,7 +146,7 @@ class GameManager {
 
             if (this.autopilots["wall_detection"]) {
 
-                if (!(0 <= new_head_position[0] && new_head_position[0] < this.board_size) && !(0 <= new_head_position[1] && new_head_position[1] < this.board_size)) {
+                if (!(0 <= new_head_position[0] && new_head_position[0] < board_size) && !(0 <= new_head_position[1] && new_head_position[1] < board_size)) {
 
                     costs[i] += 1000;
 
@@ -358,17 +358,18 @@ class GameManager {
 
 class PurchaseButton {
 
-    constructor(starting_value, price_multiplier) {
+    constructor(starting_value, price_multiplier, max_level) {
 
         this.price = starting_value;
         this.price_multiplier = price_multiplier;
+        this.max_level = max_level
         this.upgrade_amount = 0;
 
     }
 
     on_click() {
 
-        if (manager.currency >= this.price) {
+        if (manager.currency >= this.price && this.upgrade_amount <= this.max_level) {
             manager.currency -= this.price;
             this.price *= this.price_multiplier;
             this.upgrade_amount += 1;
@@ -450,7 +451,7 @@ function gameLoop(running, food_position) {
 
     setTimeout(function onTick() {
         has_eaten = false;
-        board_size = manager.snake.board_size;
+        board_size = this.manager.multipliers["board_size"];
 
         while (is_array_item_in_array(food_position, manager.snake.position)) {
             has_eaten = true;
