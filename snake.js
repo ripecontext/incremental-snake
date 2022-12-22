@@ -84,7 +84,7 @@ class GameManager {
         this.game_in_progress = false;
         this.stage = 1;
 
-        this.multipliers = {"score_multiplier": 1, "score_exponent": 1, "board_size": 10};
+        this.multipliers = {"score_multiplier": 1, "score_exponent": 1, "board_size": 10, "game_speed": 100};
         this.autopilots = {"distance_to_food": false, "wall_detection": false, "area_detection": false};
 
         this.buttons = [];
@@ -96,6 +96,7 @@ class GameManager {
         this.buttons.push([new PurchaseButton(100000000, 0, 1), "wall_detection_unlock", "Unlock Wall and Body Detection"]);
         this.buttons.push([new PurchaseButton(10000000000, 0, 1), "area_detection_unlock", "Unlock Area Detection"]);
         this.buttons.push([new PurchaseButton(1000000000000, 0, 1), "stage_three_button", "Unlock Stage Three"]);
+        this.buttons.push([new PurchaseButton(1000000000000, 2, 44), "stage_three_button", "Unlock Stage Three"]);
 
         document.addEventListener("keydown", this.on_key_press.bind(this));
     }
@@ -259,6 +260,13 @@ class GameManager {
                 if (button[0].on_click()) {
                     this.stage = 3;
                 }
+                break;
+
+            case "game_speed_button":
+                if (button[0].click()) {
+                    this.multipliers["game_speed"] *= 0.9;
+                }
+                break;
         }
 
         this.update_GUI();
@@ -500,7 +508,7 @@ function gameLoop(running, food_position) {
                 gameLoop(running, food_position);
             }
         }
-    }, 100);
+    }, manager.multipliers["game_speed"]);
 }
 
 
