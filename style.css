@@ -1,21 +1,42 @@
 html {
     background-color: #222222;
     color: white;
+    overflow: hidden;
 }
 
 canvas {
     border: 1px solid white;
 }
 
+main article {
+    width: 25vw;
+    border: 2px white dotted;
+    padding: 15px;
+    margin: 15px;
+}
+
+main article h6 {
+    text-align: center;
+    font-size: 30px;
+    margin: 0;
+}
+
 #game_container {
     display: flex;
+    text-align: center;
 }
 
 #game_display {
     flex: 1;
+    overflow: hidden;
 }
 
 #shop_display {
+    flex: 1;
+    overflow: hidden;
+}
+
+#settings_display {
     flex: 1;
 }
 

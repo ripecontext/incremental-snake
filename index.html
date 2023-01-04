@@ -3,7 +3,10 @@
     <head>
         <title>Incremental Snake</title>
         <link rel="stylesheet" href="style.css">
-        <script src="snake.js" defer></script>
+        <script src="javascript/tools.js" defer></script>
+        <script src="javascript/snake.js" defer></script>
+        <script src="javascript/manager.js" defer></script>
+        <script src="javascript/main.js" defer></script>
     </head>
     <body onload="main()">
         <header>
@@ -11,16 +14,15 @@
         </header>
         <main>
             <div id="game_container">
-                <div id="game_display">
+                <article id="game_display">
+                    <h6>Game</h6>
                     <h3 id="score_counter">Score: 0</h3>
                     <canvas id="game_display_canvas" width="320" height="320"></canvas>
                     <br>
                     <button onclick="gameLoop(true, [2, 2])" id="start_game_button">Play</button>
-                    <br>
-                    <p>Automatic Restart <input type="checkbox" id="auto_restart_checkbox"></p>
-                    <p>Snake Autopilot <input type="checkbox" id="autopilot_checkbox"></p>
-                </div>
-                <div id="shop_display">
+                </article>
+                <article id="shop_display">
+                    <h6>Shop</h6>
                     <h3 id="currency_counter">Money: £0</h3>
                     <h4>The Money Equation:</h4>
                     <p id="money_equation">(Score ^ Score Exponent) * Score Multiplier = Money</p>
@@ -40,7 +42,12 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </article>
+                <article id="settings_display">
+                    <h6>Settings</h6>
+                    <p>Automatic Restart <input type="checkbox" id="auto_restart_checkbox"></p>
+                    <p>Snake Autopilot <input type="checkbox" id="autopilot_checkbox"></p>
+                </article>
             </div>
         </main>
     </body>
