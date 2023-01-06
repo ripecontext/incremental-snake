@@ -20,6 +20,14 @@
                     <canvas id="game_display_canvas" width="320" height="320"></canvas>
                     <br>
                     <button onclick="gameLoop(true, [2, 2])" id="start_game_button">Play</button>
+                    
+
+                    <article id="settings_display">
+                        <h6>Settings</h6>
+                        <p>Automatic Restart <input type="checkbox" id="auto_restart_checkbox"></p>
+                        <p>Snake Autopilot <input type="checkbox" id="autopilot_checkbox"></p>
+                    </article>
+                    
                 </article>
                 <article id="shop_display">
                     <h6>Shop</h6>
@@ -43,11 +51,7 @@
                         </div>
                     </div>
                 </article>
-                <article id="settings_display">
-                    <h6>Settings</h6>
-                    <p>Automatic Restart <input type="checkbox" id="auto_restart_checkbox"></p>
-                    <p>Snake Autopilot <input type="checkbox" id="autopilot_checkbox"></p>
-                </article>
+
             </div>
         </main>
     </body>

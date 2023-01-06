@@ -1,18 +1,19 @@
 html {
     background-color: #222222;
     color: white;
-    overflow: hidden;
 }
 
 canvas {
     border: 1px solid white;
+    width: 25vw;
+    height: 25vw;
 }
 
 main article {
     width: 25vw;
     border: 2px white dotted;
-    padding: 15px;
-    margin: 15px;
+    padding: 2px;
+    margin: 4px;
 }
 
 main article h6 {
@@ -24,6 +25,7 @@ main article h6 {
 #game_container {
     display: flex;
     text-align: center;
+    flex-flow: wrap;
 }
 
 #game_display {
@@ -33,11 +35,13 @@ main article h6 {
 
 #shop_display {
     flex: 1;
-    overflow: hidden;
+    overflow: auto;
 }
 
 #settings_display {
-    flex: 1;
+    margin: auto;
+    display: block;
+    width: 90%;
 }
 
 #purchase_buttons {
@@ -47,8 +51,9 @@ main article h6 {
 #purchase_buttons button {
     width: 180px;
     height: 120px;
-    background-color: #222222;
+    background-color: #220000;
     color: white;
+    border-style: solid;
     border-color: #FF0000;
     border-width: 3px;
     border-radius: 10%;

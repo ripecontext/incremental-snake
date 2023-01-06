@@ -227,9 +227,29 @@ class GameManager {
             }
 
             if (this.currency >= this.buttons[i][0].price) {
-                button.style.borderColor = "green";
+                if (this.buttons[i][1] === "stage_two_button" || this.buttons[i][1] === "stage_three_button") {
+
+                    button.style.borderColor = "#7600c4";
+                    button.style.backgroundColor = "#200036";
+
+                } else {
+
+                    button.style.borderColor = "#00ff00";
+                    button.style.backgroundColor = "#002200";
+
+                }
             } else {
-                button.style.borderColor = "red";
+                if (this.buttons[i][1] === "stage_two_button" || this.buttons[i][1] === "stage_three_button") {
+
+                    button.style.borderColor = "#ff0000";
+                    button.style.backgroundColor = "#200036";
+
+                } else {
+
+                    button.style.borderColor = "#ff0000";
+                    button.style.backgroundColor = "#220000";
+
+                }
             }
 
         }

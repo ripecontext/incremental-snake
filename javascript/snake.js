@@ -16,19 +16,23 @@ class Snake {
 
         const scale = 320 / this.board_size;
 
-        var canvas = document.getElementById("game_display_canvas");
-        var ctx = canvas.getContext("2d");
+        const canvas = document.getElementById("game_display_canvas");
+        const ctx = canvas.getContext("2d");
+
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+        ctx.scale(canvas.width / this.board_size, canvas.height / this.board_size);
 
         ctx.fillStyle = "#222222";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         ctx.fillStyle = "#FF0000";
-        ctx.fillRect(food_position[0] * scale, food_position[1] * scale, scale, scale);
+        ctx.fillRect(food_position[0], food_position[1], 1, 1);
 
         ctx.fillStyle = "#FFFFFF";
 
         for(let i = 0; i < this.position.length - 1; i++) {
-            ctx.fillRect(this.position[i][0] * scale, this.position[i][1] * scale, scale, scale);
+            ctx.fillRect(this.position[i][0], this.position[i][1], 1, 1);
         }
 
     }
