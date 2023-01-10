@@ -1,8 +1,65 @@
 html {
-    background-color: rgb(34, 34, 34);
+    background-color: #222222;
     color: white;
 }
 
 canvas {
     border: 1px solid white;
+    width: 25vw;
+    height: 25vw;
+}
+
+main article {
+    width: 25vw;
+    border: 2px white dotted;
+    padding: 2px;
+    margin: 4px;
+}
+
+main article h6 {
+    text-align: center;
+    font-size: 30px;
+    margin: 0;
+}
+
+#game_container {
+    display: flex;
+    text-align: center;
+    flex-flow: wrap;
+}
+
+#game_display {
+    flex: 1;
+    overflow: hidden;
+}
+
+#shop_display {
+    flex: 1;
+    overflow: auto;
+}
+
+#settings_display {
+    margin: auto;
+    display: block;
+    width: 90%;
+}
+
+#purchase_buttons {
+    width: 580px;
+}
+
+#purchase_buttons button {
+    width: 180px;
+    height: 120px;
+    background-color: #220000;
+    color: white;
+    border-style: solid;
+    border-color: #FF0000;
+    border-width: 3px;
+    border-radius: 10%;
+}
+
+#start_game_button {
+    width: 60px;
+    height: 34px;
 }
