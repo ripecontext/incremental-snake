@@ -13,13 +13,13 @@ class GameManager {
         this.buttons = [];
         this.buttons.push([new PurchaseButton(4, 2.4, 100), "score_multiplier", "Upgrade Score Multiplier"]);
         this.buttons.push([new PurchaseButton(10, 3.2, 100), "score_exponent", "Upgrade Score Exponent"]);
-        this.buttons.push([new PurchaseButton(1000, 10**8, 3), "board_size", "Upgrade Board Size"]);
+        this.buttons.push([new PurchaseButton(1000, 10**8, 4), "board_size", "Upgrade Board Size"]);
         this.buttons.push([new PurchaseButton(1000000, 0, 1), "stage_two_button", "Unlock Stage Two"]);
         this.buttons.push([new PurchaseButton(1000000, 0, 1), "distance_to_food_unlock", "Unlock Distance to Food"]);
         this.buttons.push([new PurchaseButton(100000000, 0, 1), "wall_detection_unlock", "Unlock Wall and Body Detection"]);
         this.buttons.push([new PurchaseButton(10000000000, 0, 1), "area_detection_unlock", "Unlock Area Detection"]);
         this.buttons.push([new PurchaseButton(1000000000000, 0, 1), "stage_three_button", "Unlock Stage Three"]);
-        this.buttons.push([new PurchaseButton(1000000000000, 2, 44), "stage_three_button", "Unlock Stage Three"]);
+        this.buttons.push([new PurchaseButton(1000000000000, 2, 43), "game_speed", "Upgrade Game Speed"]);
 
         document.addEventListener("keydown", this.on_key_press.bind(this));
     }
@@ -100,7 +100,7 @@ class GameManager {
         var visited = [starting_position];
         var blocked = [];
         
-        while (visited.length > 0 && blocked.length < this.snake.position.length) {
+        while (visited.length > 0 && blocked.length < 40) {
 
             var current_node = visited.at(0);
             blocked.push(visited.shift());
@@ -185,8 +185,8 @@ class GameManager {
                 }
                 break;
 
-            case "game_speed_button":
-                if (button[0].click()) {
+            case "game_speed":
+                if (button[0].on_click()) {
                     this.multipliers["game_speed"] *= 0.9;
                 }
                 break;
@@ -214,7 +214,8 @@ class GameManager {
 
                     if (this.stage >= 2) {
                         document.getElementById("stage_two_content").style.visibility = 'visible';
-                    } else if (this.stage >= 3) {
+                    } 
+                    if (this.stage >= 3) {
                         document.getElementById("stage_three_content").style.visibility = 'visible';
                     }
 

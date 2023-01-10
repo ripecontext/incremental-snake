@@ -1,6 +1,7 @@
 function main() {
 
     document.getElementById("stage_two_content").style.visibility = 'hidden';
+    document.getElementById("stage_three_content").style.visibility = 'hidden';
 
     const board_size = 10
 
