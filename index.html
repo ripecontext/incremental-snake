@@ -3,20 +3,90 @@
     <head>
         <title>Incremental Snake</title>
         <link rel="stylesheet" href="style.css">
+        <script src="javascript/tools.js" defer></script>
+        <script src="javascript/snake.js" defer></script>
+        <script src="javascript/manager.js" defer></script>
+        <script src="javascript/main.js" defer></script>
     </head>
-    <body>
+    <body onload="main()">
         <header>
             <h1>Incremental Snake</h1>
         </header>
         <main>
-            <div id="game_display">
-                <canvas id="game_display_canvas" width="400" height="400"></canvas>
+            <div id="game_container">
+                <article id="game_display">
+                    <h6>Game</h6>
+                    <h3 id="score_counter">Score: 0</h3>
+                    <canvas id="game_display_canvas" width="320" height="320"></canvas>
+                    <br>
+                    <button onclick="gameLoop(true, [2, 2])" id="start_game_button">Play</button>
+                </article>
+
             </div>
-            <div id="shop_display">
-                <button onclick="main()">Play</button>
+            <div id="tabs_container">
+
+                <div class="tab">
+                    <button class="tablinks" onclick="openTab(event, 'shop_display')" id="shop_button">Shop</button>
+                    <button class="tablinks" onclick="openTab(event, 'settings_display')">Settings</button>
+                    <button class="tablinks" onclick="openTab(event, 'help_section')">Help</button>
+                </div>
+
+                <div id="shop_display" class="tabcontent">
+                    <h6>Shop</h6>
+                    <h3 id="currency_counter">Money: £0</h3>
+                    <h4>The Money Equation:</h4>
+                    <p id="money_equation">(Score ^ Score Exponent) * Score Multiplier = Money</p>
+                    <div id="purchase_buttons">
+                        <h2>Stage One</h2>
+                        <button onclick="manager.purchase_button_clicked('score_multiplier')" id="score_multiplier">Upgrade score multiplier</button>
+                        <button onclick="manager.purchase_button_clicked('score_exponent')" id="score_exponent">Upgrade score exponent</button>
+                        <button onclick="manager.purchase_button_clicked('board_size')" id="board_size">Upgrade game speed</button>
+                        <h2>Stage Two <button style="height:60px" id="stage_two_button" onclick="manager.purchase_button_clicked('stage_two_button')">Unlock Stage Two</button></h2>
+                        <div id="stage_two_content">
+                            <button onclick="manager.purchase_button_clicked('distance_to_food_unlock')" id="distance_to_food_unlock">Unlock Distance to Food</button>
+                            <button onclick="manager.purchase_button_clicked('wall_detection_unlock')" id="wall_detection_unlock">Unlock Wall and Body Detection</button>
+                            <button onclick="manager.purchase_button_clicked('area_detection_unlock')" id="area_detection_unlock">Unlock Area Detection</button>
+                            <h2>Stage Three <button style="height:60px" id="stage_three_button" onclick="manager.purchase_button_clicked('stage_three_button')">Unlock Stage Three</button></h2>
+                            <div id="stage_three_content">
+                                <button onclick="manager.purchase_button_clicked('game_speed')" id="game_speed">Upgrade Game Speed</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="settings_display" class="tabcontent">
+                    <h6>Settings</h6>
+                    <p>Automatic Restart <input type="checkbox" id="auto_restart_checkbox"></p>
+                    <p>Snake Autopilot <input type="checkbox" id="autopilot_checkbox"></p>
+                    <button onclick="uncover_reset_button()" class="reset_buttons">RESET THE GAME</button>
+                    <button onclick="uncover_real_reset_button()" id="reset_button" class="reset_buttons">ACTUALLY RESET THE GAME</button>
+                    <button onclick="manager.clear_data()" id="real_reset_button" class="reset_buttons">RESET THE GAME FOR REAL THIS TIME</button>
+                </div>
+
+                <div id="help_section" class="tabcontent">
+                    <h6>How do I play the game?</h6>
+                    <p>
+                        Your goal as the snake is to collect as much food as possible without hitting either yourself or the walls.
+                        You control your snake with WASD and can begin a game by pressing the "Play" button. The score you earn is
+                        converted into "money" at the end using the money equation, which can be upgraded using money to increase
+                        the amount of money you can earn. Later, money can be used to unlock autopilot modes, which allow the snake
+                        to play itself.
+                    </p>
+                    <h6>How is money calculated?</h6>
+                    <p>
+                        Money is calculated using the money equation, which is as follows:<br><br>
+                        Money = (Points ^ Exponent) * Multiplier<br><br>
+                        Both the Exponent and Multiplier can be upgraded in the shop, which increases the amount of money you earn
+                        per point you earn from playing the game. The Multiplier is a flat multiplication of your score, applied
+                        after the exponent. The exponent however is applied directly to your score and means that higher scores
+                        give increasingly higher rewards polynomially, which should encourage you to try to get as high a score
+                        as possible to make the most out of this.
+                    </p>
+                </div>
+
+                <br><br><br><br>
+
             </div>
         </main>
     </body>
-
-    <script src="snake.js"></script>
 </html>
