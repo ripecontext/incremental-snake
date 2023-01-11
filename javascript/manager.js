@@ -7,7 +7,7 @@ class GameManager {
         this.game_in_progress = false;
         this.stage = 1;
 
-        this.multipliers = {"score_multiplier": 1, "score_exponent": 1, "board_size": 10, "game_speed": 100};
+        this.multipliers = {"score_multiplier": 1, "score_exponent": 1, "board_size": 10, "game_speed": 150};
         this.autopilots = {"distance_to_food": false, "wall_detection": false, "area_detection": false};
 
         this.buttons = [];
@@ -19,7 +19,7 @@ class GameManager {
         this.buttons.push([new PurchaseButton(100000000, 0, 1), "wall_detection_unlock", "Unlock Wall and Body Detection"]);
         this.buttons.push([new PurchaseButton(10000000000, 0, 1), "area_detection_unlock", "Unlock Area Detection"]);
         this.buttons.push([new PurchaseButton(1000000000000, 0, 1), "stage_three_button", "Unlock Stage Three"]);
-        this.buttons.push([new PurchaseButton(1000000000000, 2, 44), "game_speed", "Upgrade Game Speed"]);
+        this.buttons.push([new PurchaseButton(1000000000000, 2, 33), "game_speed", "Upgrade Game Speed"]);
 
         document.addEventListener("keydown", this.on_key_press.bind(this));
     }
