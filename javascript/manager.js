@@ -13,13 +13,13 @@ class GameManager {
         this.buttons = [];
         this.buttons.push([new PurchaseButton(4, 3, 100), "score_multiplier", "Upgrade Score Multiplier"]);
         this.buttons.push([new PurchaseButton(10, 4, 100), "score_exponent", "Upgrade Score Exponent"]);
-        this.buttons.push([new PurchaseButton(1000, 10**8, 5), "board_size", "Upgrade Board Size"]);
+        this.buttons.push([new PurchaseButton(1000, 10**6, 5), "board_size", "Upgrade Board Size"]);
         this.buttons.push([new PurchaseButton(1000000, 0, 1), "stage_two_button", "Unlock Stage Two"]);
         this.buttons.push([new PurchaseButton(1000000, 0, 1), "distance_to_food_unlock", "Unlock Distance to Food"]);
         this.buttons.push([new PurchaseButton(100000000, 0, 1), "wall_detection_unlock", "Unlock Wall and Body Detection"]);
         this.buttons.push([new PurchaseButton(10000000000, 0, 1), "area_detection_unlock", "Unlock Area Detection"]);
         this.buttons.push([new PurchaseButton(1000000000000, 0, 1), "stage_three_button", "Unlock Stage Three"]);
-        this.buttons.push([new PurchaseButton(1000000000000, 2, 33), "game_speed", "Upgrade Game Speed"]);
+        this.buttons.push([new PurchaseButton(1000000000000, 5, 33), "game_speed", "Upgrade Game Speed"]);
 
         document.addEventListener("keydown", this.on_key_press.bind(this));
     }
@@ -228,29 +228,9 @@ class GameManager {
             }
 
             if (this.currency >= this.buttons[i][0].price) {
-                if (this.buttons[i][1] === "stage_two_button" || this.buttons[i][1] === "stage_three_button") {
-
-                    button.style.borderColor = "#7600c4";
-                    button.style.backgroundColor = "#200036";
-
-                } else {
-
-                    button.style.borderColor = "#00ff00";
-                    button.style.backgroundColor = "#002200";
-
-                }
+                button.disabled = false;
             } else {
-                if (this.buttons[i][1] === "stage_two_button" || this.buttons[i][1] === "stage_three_button") {
-
-                    button.style.borderColor = "#ff0000";
-                    button.style.backgroundColor = "#200036";
-
-                } else {
-
-                    button.style.borderColor = "#ff0000";
-                    button.style.backgroundColor = "#220000";
-
-                }
+                button.disabled = true;
             }
 
         }
@@ -269,7 +249,10 @@ class GameManager {
     }
 
     save_data() {
-        localStorage.setItem("manager_state", `${this.currency};${this.stage}`);
+        const auto_restart_on = document.getElementById("auto_restart_checkbox").checked;
+        const auto_pilot_on = document.getElementById("autopilot_checkbox").checked;
+
+        localStorage.setItem("manager_state", `${this.currency};${(auto_restart_on) ? 1 : 0};${(auto_pilot_on) ? 1 : 0}`);
         var upgrade_string = "";
         for (var i = 0; i < this.buttons.length; i++) {
             upgrade_string += this.buttons[i][0].upgrade_amount + ";";
@@ -284,6 +267,8 @@ class GameManager {
         var manager_state_data = localStorage.getItem("manager_state");
         manager_state_data = manager_state_data.split(";");
         
+        document.getElementById("auto_restart_checkbox").checked = (manager_state_data[1] == 1);
+        document.getElementById("autopilot_checkbox").checked = (manager_state_data[2] == 1);
 
         var end_currency = Number(manager_state_data[0]);
 
