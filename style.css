@@ -90,12 +90,17 @@ main div h6 {
 #purchase_buttons button {
     width: 180px;
     height: 120px;
-    background-color: #220000;
+    background-color: #002200;
     color: white;
     border-style: solid;
-    border-color: #FF0000;
+    border-color: #00ff00;
     border-width: 3px;
     border-radius: 10%;
+}
+
+#purchase_buttons button:disabled {
+    border-color: #FF0000;
+    background-color: #220000;
 }
 
 #start_game_button {
