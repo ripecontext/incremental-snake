@@ -1,7 +1,11 @@
 function main() {
 
-    document.getElementById("stage_two_content").style.visibility = 'hidden';
-    document.getElementById("stage_three_content").style.visibility = 'hidden';
+    document.getElementById("stage_two_content").style.display = 'none';
+    document.getElementById("stage_three_content").style.display = 'none';
+    document.getElementById("reset_button").style.display = 'none';
+    document.getElementById("real_reset_button").style.display = 'none';
+    document.getElementById("shop_display").style.display = 'block';
+    document.getElementById("shop_button").className += " active";
 
     const board_size = 10
 

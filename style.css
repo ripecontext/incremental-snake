@@ -9,43 +9,82 @@ canvas {
     height: 25vw;
 }
 
-main article {
-    width: 25vw;
-    border: 2px white dotted;
-    padding: 2px;
-    margin: 4px;
+main {
+    display: flex;
 }
 
-main article h6 {
-    text-align: center;
+main div h6 {
     font-size: 30px;
     margin: 0;
 }
 
 #game_container {
     display: flex;
+    flex: 1;
     text-align: center;
-    flex-flow: wrap;
+}
+
+#tabs_container {
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+    border: 1px white solid;
 }
 
 #game_display {
-    flex: 1;
     overflow: hidden;
+    width: 100%;
 }
 
 #shop_display {
-    flex: 1;
     overflow: auto;
+    width: 100%;
 }
 
 #settings_display {
-    margin: auto;
-    display: block;
-    width: 90%;
+    text-align: left;
+}
+
+#help_section {
+    text-align: left;
+}
+
+.tab {
+    overflow: hidden;
+    height: 60px;
+    width: 100%;
+}
+
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    border: 1px solid white;
+    color: white;
+    font-size: 40px;
+    width: 25%;
+}
+
+.tab button:hover {
+    background-color: #333333;
+}
+
+.tab button.active {
+    background-color: white;
+    color:#222222;
+}
+
+.tabcontent {
+    display: none;
+    position: relative;
+    top: 50px;
+    text-align: center;
 }
 
 #purchase_buttons {
     width: 580px;
+    margin: auto;
 }
 
 #purchase_buttons button {

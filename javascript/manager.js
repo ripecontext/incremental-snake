@@ -11,15 +11,15 @@ class GameManager {
         this.autopilots = {"distance_to_food": false, "wall_detection": false, "area_detection": false};
 
         this.buttons = [];
-        this.buttons.push([new PurchaseButton(4, 2.4, 100), "score_multiplier", "Upgrade Score Multiplier"]);
-        this.buttons.push([new PurchaseButton(10, 3.2, 100), "score_exponent", "Upgrade Score Exponent"]);
-        this.buttons.push([new PurchaseButton(1000, 10**8, 4), "board_size", "Upgrade Board Size"]);
+        this.buttons.push([new PurchaseButton(4, 3, 100), "score_multiplier", "Upgrade Score Multiplier"]);
+        this.buttons.push([new PurchaseButton(10, 4, 100), "score_exponent", "Upgrade Score Exponent"]);
+        this.buttons.push([new PurchaseButton(1000, 10**8, 5), "board_size", "Upgrade Board Size"]);
         this.buttons.push([new PurchaseButton(1000000, 0, 1), "stage_two_button", "Unlock Stage Two"]);
         this.buttons.push([new PurchaseButton(1000000, 0, 1), "distance_to_food_unlock", "Unlock Distance to Food"]);
         this.buttons.push([new PurchaseButton(100000000, 0, 1), "wall_detection_unlock", "Unlock Wall and Body Detection"]);
         this.buttons.push([new PurchaseButton(10000000000, 0, 1), "area_detection_unlock", "Unlock Area Detection"]);
         this.buttons.push([new PurchaseButton(1000000000000, 0, 1), "stage_three_button", "Unlock Stage Three"]);
-        this.buttons.push([new PurchaseButton(1000000000000, 2, 43), "game_speed", "Upgrade Game Speed"]);
+        this.buttons.push([new PurchaseButton(1000000000000, 2, 44), "game_speed", "Upgrade Game Speed"]);
 
         document.addEventListener("keydown", this.on_key_press.bind(this));
     }
@@ -213,10 +213,10 @@ class GameManager {
                     button.innerHTML = this.buttons[i][2];
 
                     if (this.stage >= 2) {
-                        document.getElementById("stage_two_content").style.visibility = 'visible';
+                        document.getElementById("stage_two_content").style.display = 'block';
                     } 
                     if (this.stage >= 3) {
-                        document.getElementById("stage_three_content").style.visibility = 'visible';
+                        document.getElementById("stage_three_content").style.display = 'block';
                     }
 
                 }
@@ -308,5 +308,6 @@ class GameManager {
     clear_data() {
         localStorage.setItem("manager_state", "0;1");
         localStorage.setItem("upgrades", "0;0;0;0;0;0;0;0");
+        window.location.reload();
     }
 }

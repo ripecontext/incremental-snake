@@ -11,7 +11,7 @@ class PurchaseButton {
 
     on_click() {
 
-        if (manager.currency >= this.price && this.upgrade_amount <= this.max_level) {
+        if (manager.currency >= this.price && this.upgrade_amount < this.max_level) {
             manager.currency -= this.price;
             this.price *= this.price_multiplier;
             this.upgrade_amount += 1;
@@ -57,10 +57,36 @@ function euclidian_distance(point_one, point_two) {
     return Math.sqrt(x_difference**2 + y_difference**2);
 }
 
+function uncover_reset_button() {
+    document.getElementById("reset_button").style.display = 'block';
+}
+
+function uncover_real_reset_button() {
+    document.getElementById("real_reset_button").style.display = 'block';
+}
+
 function give_money(amount) {
     manager.currency += amount;
 }
 
 function sleep(time) {
     return new Promise(resolve => setTimeout(resolve, time));
+}
+
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+
 }

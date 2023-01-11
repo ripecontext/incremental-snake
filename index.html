@@ -20,16 +20,18 @@
                     <canvas id="game_display_canvas" width="320" height="320"></canvas>
                     <br>
                     <button onclick="gameLoop(true, [2, 2])" id="start_game_button">Play</button>
-                    
-
-                    <article id="settings_display">
-                        <h6>Settings</h6>
-                        <p>Automatic Restart <input type="checkbox" id="auto_restart_checkbox"></p>
-                        <p>Snake Autopilot <input type="checkbox" id="autopilot_checkbox"></p>
-                    </article>
-                    
                 </article>
-                <article id="shop_display">
+
+            </div>
+            <div id="tabs_container">
+
+                <div class="tab">
+                    <button class="tablinks" onclick="openTab(event, 'shop_display')" id="shop_button">Shop</button>
+                    <button class="tablinks" onclick="openTab(event, 'settings_display')">Settings</button>
+                    <button class="tablinks" onclick="openTab(event, 'help_section')">Help</button>
+                </div>
+
+                <div id="shop_display" class="tabcontent">
                     <h6>Shop</h6>
                     <h3 id="currency_counter">Money: £0</h3>
                     <h4>The Money Equation:</h4>
@@ -50,7 +52,39 @@
                             </div>
                         </div>
                     </div>
-                </article>
+                </div>
+
+                <div id="settings_display" class="tabcontent">
+                    <h6>Settings</h6>
+                    <p>Automatic Restart <input type="checkbox" id="auto_restart_checkbox"></p>
+                    <p>Snake Autopilot <input type="checkbox" id="autopilot_checkbox"></p>
+                    <button onclick="uncover_reset_button()" class="reset_buttons">RESET THE GAME</button>
+                    <button onclick="uncover_real_reset_button()" id="reset_button" class="reset_buttons">ACTUALLY RESET THE GAME</button>
+                    <button onclick="manager.clear_data()" id="real_reset_button" class="reset_buttons">RESET THE GAME FOR REAL THIS TIME</button>
+                </div>
+
+                <div id="help_section" class="tabcontent">
+                    <h6>How do I play the game?</h6>
+                    <p>
+                        Your goal as the snake is to collect as much food as possible without hitting either yourself or the walls.
+                        You control your snake with WASD and can begin a game by pressing the "Play" button. The score you earn is
+                        converted into "money" at the end using the money equation, which can be upgraded using money to increase
+                        the amount of money you can earn. Later, money can be used to unlock autopilot modes, which allow the snake
+                        to play itself.
+                    </p>
+                    <h6>How is money calculated?</h6>
+                    <p>
+                        Money is calculated using the money equation, which is as follows:<br><br>
+                        Money = (Points ^ Exponent) * Multiplier<br><br>
+                        Both the Exponent and Multiplier can be upgraded in the shop, which increases the amount of money you earn
+                        per point you earn from playing the game. The Multiplier is a flat multiplication of your score, applied
+                        after the exponent. The exponent however is applied directly to your score and means that higher scores
+                        give increasingly higher rewards polynomially, which should encourage you to try to get as high a score
+                        as possible to make the most out of this.
+                    </p>
+                </div>
+
+                <br><br><br><br>
 
             </div>
         </main>
