@@ -12,15 +12,15 @@ class GameManager {
         this.autopilots = {"distance_to_food": false, "wall_detection": false, "area_detection": false};
 
         this.buttons = [];
-        this.buttons.push([new PurchaseButton(4, 3, 100), "score_multiplier", "Upgrade Score Multiplier"]);
-        this.buttons.push([new PurchaseButton(10, 4, 100), "score_exponent", "Upgrade Score Exponent"]);
+        this.buttons.push([new PurchaseButton(4, 2.75, 100), "score_multiplier", "Upgrade Score Multiplier"]);
+        this.buttons.push([new PurchaseButton(10, 3.2, 100), "score_exponent", "Upgrade Score Exponent"]);
         this.buttons.push([new PurchaseButton(1000, 10**6, 5), "board_size", "Upgrade Board Size"]);
         this.buttons.push([new PurchaseButton(1000000, 0, 1), "stage_two_button", "Unlock Stage Two"]);
-        this.buttons.push([new PurchaseButton(1000000, 0, 1), "distance_to_food_unlock", "Unlock Distance to Food"]);
-        this.buttons.push([new PurchaseButton(100000000, 0, 1), "wall_detection_unlock", "Unlock Wall and Body Detection"]);
-        this.buttons.push([new PurchaseButton(10000000000, 0, 1), "area_detection_unlock", "Unlock Area Detection"]);
-        this.buttons.push([new PurchaseButton(1000000000000, 0, 1), "stage_three_button", "Unlock Stage Three"]);
-        this.buttons.push([new PurchaseButton(1000000000000, 5, 33), "game_speed", "Upgrade Game Speed"]);
+        this.buttons.push([new PurchaseButton(100000, 0, 1), "distance_to_food_unlock", "Unlock Distance to Food"]);
+        this.buttons.push([new PurchaseButton(10000000, 0, 1), "wall_detection_unlock", "Unlock Wall and Body Detection"]);
+        this.buttons.push([new PurchaseButton(1000000000, 0, 1), "area_detection_unlock", "Unlock Area Detection"]);
+        this.buttons.push([new PurchaseButton(100000000000, 0, 1), "stage_three_button", "Unlock Stage Three"]);
+        this.buttons.push([new PurchaseButton(100000000000, 5, 33), "game_speed", "Upgrade Game Speed"]);
 
         document.addEventListener("keydown", this.on_key_press.bind(this));
     }
