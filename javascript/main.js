@@ -6,6 +6,7 @@ function main() {
     document.getElementById("real_reset_button").style.display = 'none';
     document.getElementById("shop_display").style.display = 'block';
     document.getElementById("shop_button").className += " active";
+    document.getElementById("light_button").style.display = 'none';
 
     const board_size = 10
 
