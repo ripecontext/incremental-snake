@@ -9,7 +9,7 @@ class GameManager {
         this.stage = 1;
 
         this.multipliers = {"score_multiplier": 1, "score_exponent": 1, "board_size": 10, "game_speed": 150}; 
-        this.autopilots = {"distance_to_food": false, "wall_detection": false, "area_detection": true};
+        this.autopilots = {"distance_to_food": false, "wall_detection": false, "area_detection": false};
 
         this.buttons = [];
         this.buttons.push([new PurchaseButton(4, 3, 100), "score_multiplier", "Upgrade Score Multiplier"]);
