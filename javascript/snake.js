@@ -14,8 +14,6 @@ class Snake {
 
     draw(food_position){
 
-        const scale = 320 / this.board_size;
-
         const canvas = document.getElementById("game_display_canvas");
         const ctx = canvas.getContext("2d");
 

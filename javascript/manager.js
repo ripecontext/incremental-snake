@@ -8,8 +8,8 @@ class GameManager {
         this.game_in_progress = false;
         this.stage = 1;
 
-        this.multipliers = {"score_multiplier": 1, "score_exponent": 1, "board_size": 10, "game_speed": 150};
-        this.autopilots = {"distance_to_food": false, "wall_detection": false, "area_detection": false};
+        this.multipliers = {"score_multiplier": 1, "score_exponent": 1, "board_size": 10, "game_speed": 150}; 
+        this.autopilots = {"distance_to_food": false, "wall_detection": false, "area_detection": true};
 
         this.buttons = [];
         this.buttons.push([new PurchaseButton(4, 3, 100), "score_multiplier", "Upgrade Score Multiplier"]);
@@ -83,11 +83,13 @@ class GameManager {
                     
                     costs[i] += 1000;
 
-                } else if (this.autopilots["area_detection"]) {
-
-                    costs[i] -= 1000 * this.area_detection(new_head_position);
-    
                 }
+
+            }
+
+            if (this.autopilots["area_detection"]) {
+
+                costs[i] -= 1000 * this.area_detection(new_head_position);
 
             }
 
@@ -101,6 +103,7 @@ class GameManager {
     area_detection(starting_position) {
 
         const directions = [[0, -1], [1, 0], [0, 1], [-1, 0]];
+        const board_size = this.multipliers["board_size"];
 
         var visited = [starting_position];
         var blocked = [];
@@ -113,7 +116,7 @@ class GameManager {
             for (var i = 0; i < 4; i++) {
                 var next_node = [current_node[0] + directions[i][0], current_node[1] + directions[i][1]];
 
-                if ((0 <= next_node[0] && next_node[0] < this.board_size) && (0 <= next_node[1] && next_node[1] < this.board_size)) {
+                if ((0 <= next_node[0] && next_node[0] < board_size) && (0 <= next_node[1] && next_node[1] < board_size)) {
 
                     if (!(is_array_item_in_array(next_node, this.snake.position)) && !(is_array_item_in_array(next_node, visited))) {
 
