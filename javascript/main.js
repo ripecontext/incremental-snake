@@ -6,6 +6,7 @@ function main() {
     document.getElementById("real_reset_button").style.display = 'none';
     document.getElementById("shop_display").style.display = 'block';
     document.getElementById("shop_button").className += " active";
+    document.getElementById("light_button").style.display = 'none';
 
     const board_size = 10
 
@@ -28,6 +29,9 @@ function gameLoop(running, food_position) {
 
     if (!manager.game_in_progress){
         document.getElementById("start_game_button").disabled = true;
+        manager.snake.position = [[3, 3], [3, 2]];
+        manager.snake.score = 0;
+        manager.snake.direction = 2;
         manager.game_in_progress = true;
     }
 
@@ -43,6 +47,8 @@ function gameLoop(running, food_position) {
 
         if (document.getElementById("autopilot_checkbox").checked) {
             manager.snake.direction = manager.decide_direction(food_position);
+        } else if (manager.movement_queue.length > 0){
+            manager.snake.direction = manager.movement_queue.shift();
         }
 
         running = !manager.snake.move(has_eaten);
@@ -56,15 +62,9 @@ function gameLoop(running, food_position) {
 
             //apply scores to money
             manager.currency += (manager.snake.score ** manager.multipliers["score_exponent"]) * manager.multipliers["score_multiplier"];
-            
-            //set up snake for next round
-            manager.snake.position = [[3, 3], [3, 2]];
-            manager.snake.score = 0;
-            manager.snake.direction = 2;
 
             //update labels
             manager.update_GUI();
-            manager.update_label_by_id("money_equation", String(`(Score ^ Score Exponent) * Score Multiplier = Money`));
             document.getElementById("start_game_button").disabled = false;
             manager.game_in_progress = false;
 

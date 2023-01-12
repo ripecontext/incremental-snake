@@ -2,24 +2,43 @@ class GameManager {
 
     constructor(snake) {
         this.snake = snake;
+        this.movement_queue = [];
         this.currency = 0;
+        this.prestiged = 0;
+        this.photons = 0;
 
         this.game_in_progress = false;
         this.stage = 1;
 
         this.multipliers = {"score_multiplier": 1, "score_exponent": 1, "board_size": 10, "game_speed": 150};
+        this.light_multipliers = {"exponent_upgrade_scale": 3.2}; 
         this.autopilots = {"distance_to_food": false, "wall_detection": false, "area_detection": false};
 
         this.buttons = [];
-        this.buttons.push([new PurchaseButton(4, 3, 100), "score_multiplier", "Upgrade Score Multiplier"]);
-        this.buttons.push([new PurchaseButton(10, 4, 100), "score_exponent", "Upgrade Score Exponent"]);
+
+        //stage one
+
+        this.buttons.push([new PurchaseButton(4, 2.75, 100), "score_multiplier", "Upgrade Score Multiplier"]);
+        this.buttons.push([new PurchaseButton(10, 3.2, 100), "score_exponent", "Upgrade Score Exponent"]);
         this.buttons.push([new PurchaseButton(1000, 10**6, 5), "board_size", "Upgrade Board Size"]);
         this.buttons.push([new PurchaseButton(1000000, 0, 1), "stage_two_button", "Unlock Stage Two"]);
-        this.buttons.push([new PurchaseButton(1000000, 0, 1), "distance_to_food_unlock", "Unlock Distance to Food"]);
-        this.buttons.push([new PurchaseButton(100000000, 0, 1), "wall_detection_unlock", "Unlock Wall and Body Detection"]);
-        this.buttons.push([new PurchaseButton(10000000000, 0, 1), "area_detection_unlock", "Unlock Area Detection"]);
-        this.buttons.push([new PurchaseButton(1000000000000, 0, 1), "stage_three_button", "Unlock Stage Three"]);
-        this.buttons.push([new PurchaseButton(1000000000000, 5, 33), "game_speed", "Upgrade Game Speed"]);
+
+        //stage two
+
+        this.buttons.push([new PurchaseButton(100000, 0, 1), "distance_to_food_unlock", "Unlock Distance to Food"]);
+        this.buttons.push([new PurchaseButton(10000000, 0, 1), "wall_detection_unlock", "Unlock Wall and Body Detection"]);
+        this.buttons.push([new PurchaseButton(1000000000, 0, 1), "area_detection_unlock", "Unlock Area Detection"]);
+        this.buttons.push([new PurchaseButton(100000000000, 0, 1), "stage_three_button", "Unlock Stage Three"]);
+
+        //stage three
+
+        this.buttons.push([new PurchaseButton(100000000000, 5, 33), "game_speed", "Upgrade Game Speed"]);
+
+        //prestige
+
+
+
+        //
 
         document.addEventListener("keydown", this.on_key_press.bind(this));
     }
@@ -32,20 +51,24 @@ class GameManager {
         const D_KEY = 68;
     
         let keyPressed = event.keyCode;
-    
-        switch(keyPressed) {
-            case W_KEY:
-                this.snake.set_direction(0);
-                break;
-            case A_KEY:
-                this.snake.set_direction(3);
-                break;
-            case S_KEY:
-                this.snake.set_direction(2);
-                break;
-            case D_KEY:
-                this.snake.set_direction(1);
-                break;
+
+        if (this.movement_queue.length < 2) {
+
+            switch(keyPressed) {
+                case W_KEY:
+                    this.movement_queue.push(0);
+                    break;
+                case A_KEY:
+                    this.movement_queue.push(3);
+                    break;
+                case S_KEY:
+                    this.movement_queue.push(2);
+                    break;
+                case D_KEY:
+                    this.movement_queue.push(1);
+                    break;
+            }
+
         }
 
     }
@@ -78,11 +101,13 @@ class GameManager {
                     
                     costs[i] += 1000;
 
-                } else if (this.autopilots["area_detection"]) {
-
-                    costs[i] -= 1000 * this.area_detection(new_head_position);
-    
                 }
+
+            }
+
+            if (this.autopilots["area_detection"]) {
+
+                costs[i] -= 100 * this.area_detection(new_head_position);
 
             }
 
@@ -96,6 +121,7 @@ class GameManager {
     area_detection(starting_position) {
 
         const directions = [[0, -1], [1, 0], [0, 1], [-1, 0]];
+        const board_size = this.multipliers["board_size"];
 
         var visited = [starting_position];
         var blocked = [];
@@ -108,7 +134,7 @@ class GameManager {
             for (var i = 0; i < 4; i++) {
                 var next_node = [current_node[0] + directions[i][0], current_node[1] + directions[i][1]];
 
-                if ((0 <= next_node[0] && next_node[0] < this.board_size) && (0 <= next_node[1] && next_node[1] < this.board_size)) {
+                if ((0 <= next_node[0] && next_node[0] < board_size) && (0 <= next_node[1] && next_node[1] < board_size)) {
 
                     if (!(is_array_item_in_array(next_node, this.snake.position)) && !(is_array_item_in_array(next_node, visited))) {
 
@@ -192,6 +218,10 @@ class GameManager {
                 break;
         }
 
+        if (this.multipliers["game_speed"] < 5) {
+            this.prestige();
+        }
+
         this.update_GUI();
 
     }
@@ -235,10 +265,14 @@ class GameManager {
 
         }
 
+        if (this.prestiged > 0) {
+            document.getElementById("light_button").style.display = "block";
+        }
+
         this.update_label_by_id("currency_counter", "Money: £" + display_logarithmically(manager.currency));
         manager.update_label_by_id("score_counter", "Score: " + String(display_logarithmically(manager.snake.score)));
         manager.update_label_by_id("money_equation", String(`(${display_logarithmically(manager.snake.score)} ^ ${display_logarithmically(manager.multipliers["score_exponent"])}) * ${display_logarithmically(manager.multipliers["score_multiplier"])} = ${display_logarithmically((manager.snake.score ** manager.multipliers["score_exponent"]) * manager.multipliers["score_multiplier"])}`));
-
+        manager.update_label_by_id("light_counter", `Photons: ${manager.photons}`)
 
     }
 
@@ -248,11 +282,31 @@ class GameManager {
 
     }
 
+    prestige() {
+
+        const auto_restart_on = document.getElementById("auto_restart_checkbox").checked;
+        const auto_pilot_on = document.getElementById("autopilot_checkbox").checked;
+
+        this.photons += 1;
+        this.prestiged += 1;
+
+        this.save_data()
+
+        var upgrade_string = "";
+        for (var i = 0; i < this.buttons.length; i++) {
+            upgrade_string += (i < 9) ? 0 : this.buttons[i][0].upgrade_amount + ";";
+        }
+        localStorage.setItem("upgrades", upgrade_string);
+        localStorage.setItem("manager_state", `${0};${(auto_restart_on) ? 1 : 0};${(auto_pilot_on) ? 1 : 0};${this.photons};${this.prestiged}`);
+        window.location.reload();
+
+    }
+
     save_data() {
         const auto_restart_on = document.getElementById("auto_restart_checkbox").checked;
         const auto_pilot_on = document.getElementById("autopilot_checkbox").checked;
 
-        localStorage.setItem("manager_state", `${this.currency};${(auto_restart_on) ? 1 : 0};${(auto_pilot_on) ? 1 : 0}`);
+        localStorage.setItem("manager_state", `${this.currency};${(auto_restart_on) ? 1 : 0};${(auto_pilot_on) ? 1 : 0};${this.photons};${this.prestiged}`);
         var upgrade_string = "";
         for (var i = 0; i < this.buttons.length; i++) {
             upgrade_string += this.buttons[i][0].upgrade_amount + ";";
@@ -261,7 +315,8 @@ class GameManager {
     }
 
     load_data() {
-        this.currency = 10 ** 200; //to get all upgrades
+        this.currency = 10 ** 1000; //to get all upgrades
+        this.photons = 10 ** 100
 
         //retrieve manager state
         var manager_state_data = localStorage.getItem("manager_state");
@@ -270,7 +325,9 @@ class GameManager {
         document.getElementById("auto_restart_checkbox").checked = (manager_state_data[1] == 1);
         document.getElementById("autopilot_checkbox").checked = (manager_state_data[2] == 1);
 
-        var end_currency = Number(manager_state_data[0]);
+        const end_currency = Number(manager_state_data[0]);
+        const end_photons = Number(manager_state_data[3]); 
+        this.prestiged = Number(manager_state_data[4]);
 
         //retrieve upgrade data
 
@@ -287,12 +344,13 @@ class GameManager {
         }
 
         this.currency = end_currency;
+        this.photons = end_photons;
 
     }
 
     clear_data() {
-        localStorage.setItem("manager_state", "0;1");
-        localStorage.setItem("upgrades", "0;0;0;0;0;0;0;0");
+        localStorage.setItem("manager_state", "0;0;0;0;0");
+        localStorage.setItem("upgrades", "0;0;0;0;0;0;0;0;0");
         window.location.reload();
     }
 }
