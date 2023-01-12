@@ -89,7 +89,7 @@ class GameManager {
 
             if (this.autopilots["area_detection"]) {
 
-                costs[i] -= 1000 * this.area_detection(new_head_position);
+                costs[i] -= 100 * this.area_detection(new_head_position);
 
             }
 
