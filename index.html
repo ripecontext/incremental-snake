@@ -20,6 +20,8 @@
                     <canvas id="game_display_canvas" width="320" height="320"></canvas>
                     <br>
                     <button onclick="gameLoop(true, [2, 2])" id="start_game_button">Play</button>
+                    <p>Automatic Restart <input type="checkbox" id="auto_restart_checkbox"></p>
+                    <p>Snake Autopilot <input type="checkbox" id="autopilot_checkbox"></p>
                 </article>
 
             </div>
@@ -57,8 +59,6 @@
 
                 <div id="settings_display" class="tabcontent">
                     <h6>Settings</h6>
-                    <p>Automatic Restart <input type="checkbox" id="auto_restart_checkbox"></p>
-                    <p>Snake Autopilot <input type="checkbox" id="autopilot_checkbox"></p>
                     <button onclick="uncover_reset_button()" class="reset_buttons">RESET THE GAME</button>
                     <button onclick="uncover_real_reset_button()" id="reset_button" class="reset_buttons">ACTUALLY RESET THE GAME</button>
                     <button onclick="manager.clear_data()" id="real_reset_button" class="reset_buttons">RESET THE GAME FOR REAL THIS TIME</button>

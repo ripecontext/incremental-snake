@@ -2,6 +2,7 @@ class GameManager {
 
     constructor(snake) {
         this.snake = snake;
+        this.movement_queue = [];
         this.currency = 0;
 
         this.game_in_progress = false;
@@ -32,20 +33,24 @@ class GameManager {
         const D_KEY = 68;
     
         let keyPressed = event.keyCode;
-    
-        switch(keyPressed) {
-            case W_KEY:
-                this.snake.set_direction(0);
-                break;
-            case A_KEY:
-                this.snake.set_direction(3);
-                break;
-            case S_KEY:
-                this.snake.set_direction(2);
-                break;
-            case D_KEY:
-                this.snake.set_direction(1);
-                break;
+
+        if (this.movement_queue.length < 3) {
+
+            switch(keyPressed) {
+                case W_KEY:
+                    this.movement_queue.push(0);
+                    break;
+                case A_KEY:
+                    this.movement_queue.push(3);
+                    break;
+                case S_KEY:
+                    this.movement_queue.push(2);
+                    break;
+                case D_KEY:
+                    this.movement_queue.push(1);
+                    break;
+            }
+
         }
 
     }

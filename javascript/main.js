@@ -43,6 +43,8 @@ function gameLoop(running, food_position) {
 
         if (document.getElementById("autopilot_checkbox").checked) {
             manager.snake.direction = manager.decide_direction(food_position);
+        } else if (manager.movement_queue.length > 0){
+            manager.snake.direction = manager.movement_queue.shift();
         }
 
         running = !manager.snake.move(has_eaten);
