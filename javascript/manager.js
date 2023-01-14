@@ -49,6 +49,11 @@ class GameManager {
         const A_KEY = 65;
         const S_KEY = 83;
         const D_KEY = 68;
+
+        const ARROW_UP = 38;
+        const ARROW_LEFT = 37;
+        const ARROW_DOWN = 40;
+        const ARROW_RIGHT = 39;
     
         let keyPressed = event.keyCode;
 
@@ -56,15 +61,19 @@ class GameManager {
 
             switch(keyPressed) {
                 case W_KEY:
+                case ARROW_UP:
                     this.movement_queue.push(0);
                     break;
                 case A_KEY:
+                case ARROW_LEFT:
                     this.movement_queue.push(3);
                     break;
                 case S_KEY:
+                case ARROW_DOWN:
                     this.movement_queue.push(2);
                     break;
                 case D_KEY:
+                case ARROW_RIGHT:
                     this.movement_queue.push(1);
                     break;
             }
