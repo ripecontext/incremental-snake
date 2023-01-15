@@ -3,9 +3,8 @@ class GameManager {
     constructor(snake) {
         this.snake = snake;
         this.movement_queue = [];
-        this.currency = 0;
+        this.currencies = {"money": 0, "photons": 0};
         this.prestiged = 0;
-        this.photons = 0;
 
         this.game_in_progress = false;
         this.stage = 1;
@@ -18,21 +17,21 @@ class GameManager {
 
         //stage one
 
-        this.buttons.push([new PurchaseButton(4, 2.75, 100), "score_multiplier", "Upgrade Score Multiplier"]);
-        this.buttons.push([new PurchaseButton(10, 3.2, 100), "score_exponent", "Upgrade Score Exponent"]);
-        this.buttons.push([new PurchaseButton(1000, 10**6, 5), "board_size", "Upgrade Board Size"]);
-        this.buttons.push([new PurchaseButton(1000000, 0, 1), "stage_two_button", "Unlock Stage Two"]);
+        this.buttons.push(new PurchaseButton("score_multiplier", "money", 4, 2.75, 100, "Upgrade Score Multiplier"));
+        this.buttons.push(new PurchaseButton("score_exponent", "money", 10, 3.2, 100, "Upgrade Score Exponent"));
+        this.buttons.push(new PurchaseButton("board_size", "money", 1000, 10**6, 5, "Upgrade Board Size"));
+        this.buttons.push(new PurchaseButton("stage_two_button", "money", 1000000, 0, 1, "Unlock Stage Two"));
 
         //stage two
 
-        this.buttons.push([new PurchaseButton(100000, 0, 1), "distance_to_food_unlock", "Unlock Distance to Food"]);
-        this.buttons.push([new PurchaseButton(10000000, 0, 1), "wall_detection_unlock", "Unlock Wall and Body Detection"]);
-        this.buttons.push([new PurchaseButton(1000000000, 0, 1), "area_detection_unlock", "Unlock Area Detection"]);
-        this.buttons.push([new PurchaseButton(100000000000, 0, 1), "stage_three_button", "Unlock Stage Three"]);
+        this.buttons.push(new PurchaseButton("distance_to_food_unlock", "money", 100000, 0, 1, "Unlock Distance to Food"));
+        this.buttons.push(new PurchaseButton("wall_detection_unlock", "money", 10000000, 0, 1, "Unlock Wall and Body Detection"));
+        this.buttons.push(new PurchaseButton("area_detection_unlock", "money", 1000000000, 0, 1, "Unlock Area Detection"));
+        this.buttons.push(new PurchaseButton("stage_three_button", "money", 100000000000, 0, 1, "Unlock Stage Three"));
 
         //stage three
 
-        this.buttons.push([new PurchaseButton(100000000000, 5, 33), "game_speed", "Upgrade Game Speed"]);
+        this.buttons.push(new PurchaseButton("game_speed", "money", 100000000000, 5, 33, "Upgrade Game Speed"));
 
         //prestige
 
@@ -165,63 +164,63 @@ class GameManager {
         var button = -1;
 
         for (var i = 0; i < this.buttons.length; i++) {
-            if (this.buttons[i][1] == id) {
+            if (this.buttons[i].id == id) {
                 button = this.buttons[i];
             }
         }
 
-        switch(button[1]){
+        switch(button.id){
             case "score_multiplier":
-                if (button[0].on_click()){
+                if (button.on_click(this.currencies)){
                     this.multipliers["score_multiplier"] *= 2;
                 }
                 break;
 
             case "score_exponent":
-                if (button[0].on_click()){
+                if (button.on_click(this.currencies)){
                     this.multipliers["score_exponent"] += 0.1;
                 }
                 break;
 
             case "board_size":
-                if (button[0].on_click()){
+                if (button.on_click(this.currencies)){
                     this.multipliers["board_size"] *= 2;
                     this.snake.board_size = this.multipliers["board_size"];
                 }
                 break;
             
             case "stage_two_button":
-                if (button[0].on_click()) {
+                if (button.on_click(this.currencies)) {
                     this.stage = 2;
                 }
                 break;
             
             case "distance_to_food_unlock":
-                if (button[0].on_click()) {
+                if (button.on_click(this.currencies)) {
                     this.autopilots["distance_to_food"] = true;
                 }
                 break;
 
             case "wall_detection_unlock":
-                if (button[0].on_click()) {
+                if (button.on_click(this.currencies)) {
                     this.autopilots["wall_detection"] = true;
                 }
                 break;
 
             case "area_detection_unlock":
-                if (button[0].on_click()) {
+                if (button.on_click(this.currencies)) {
                     this.autopilots["area_detection"] = true;
                 }
                 break;
 
             case "stage_three_button":
-                if (button[0].on_click()) {
+                if (button.on_click(this.currencies)) {
                     this.stage = 3;
                 }
                 break;
 
             case "game_speed":
-                if (button[0].on_click()) {
+                if (button.on_click(this.currencies)) {
                     this.multipliers["game_speed"] *= 0.9;
                 }
                 break;
@@ -239,49 +238,24 @@ class GameManager {
 
         for (var i = 0; i < this.buttons.length; i++) {
 
-            var button = document.getElementById(this.buttons[i][1]);
-
-            if (this.buttons[i][0].price_multiplier === 0) {
-
-                if (this.buttons[i][0].price > 0) {
-
-                    button.innerHTML = `${this.buttons[i][2]}<br>Cost: ${display_logarithmically(this.buttons[i][0].price)}`;
-
-                } else {
-
-                    button.innerHTML = this.buttons[i][2];
-
-                    if (this.stage >= 2) {
-                        document.getElementById("stage_two_content").style.display = 'block';
-                    } 
-                    if (this.stage >= 3) {
-                        document.getElementById("stage_three_content").style.display = 'block';
-                    }
-
-                }
-
-            } else {
-
-                button.innerHTML = `${this.buttons[i][2]}<br>Current Value: ${display_logarithmically(this.multipliers[this.buttons[i][1]])}<br>Cost: ${display_logarithmically(this.buttons[i][0].price)}`;
-
-            }
-
-            if (this.currency >= this.buttons[i][0].price) {
-                button.disabled = false;
-            } else {
-                button.disabled = true;
-            }
+            this.buttons[i].show(this.currencies, this.multipliers);
 
         }
 
+        if (this.stage >= 2) {
+            document.getElementById("stage_two_content").style.display = 'block';
+        } 
+        if (this.stage >= 3) {
+            document.getElementById("stage_three_content").style.display = 'block';
+        }
         if (this.prestiged > 0) {
             document.getElementById("light_button").style.display = "block";
         }
 
-        this.update_label_by_id("currency_counter", "Money: £" + display_logarithmically(manager.currency));
+        this.update_label_by_id("currency_counter", "Money: £" + display_logarithmically(manager.currencies["money"]));
         manager.update_label_by_id("score_counter", "Score: " + String(display_logarithmically(manager.snake.score)));
         manager.update_label_by_id("money_equation", String(`(${display_logarithmically(manager.snake.score)} ^ ${display_logarithmically(manager.multipliers["score_exponent"])}) * ${display_logarithmically(manager.multipliers["score_multiplier"])} = ${display_logarithmically((manager.snake.score ** manager.multipliers["score_exponent"]) * manager.multipliers["score_multiplier"])}`));
-        manager.update_label_by_id("light_counter", `Photons: ${manager.photons}`)
+        manager.update_label_by_id("light_counter", `Photons: ${manager.currencies["photons"]}`)
 
     }
 
@@ -303,7 +277,7 @@ class GameManager {
 
         var upgrade_string = "";
         for (var i = 0; i < this.buttons.length; i++) {
-            upgrade_string += (i < 9) ? 0 : this.buttons[i][0].upgrade_amount + ";";
+            upgrade_string += (i < 9) ? 0 : this.buttons[i].upgrade_amount + ";";
         }
         localStorage.setItem("upgrades", upgrade_string);
         localStorage.setItem("manager_state", `${0};${(auto_restart_on) ? 1 : 0};${(auto_pilot_on) ? 1 : 0};${this.photons};${this.prestiged}`);
@@ -315,10 +289,10 @@ class GameManager {
         const auto_restart_on = document.getElementById("auto_restart_checkbox").checked;
         const auto_pilot_on = document.getElementById("autopilot_checkbox").checked;
 
-        localStorage.setItem("manager_state", `${this.currency};${(auto_restart_on) ? 1 : 0};${(auto_pilot_on) ? 1 : 0};${this.photons};${this.prestiged}`);
+        localStorage.setItem("manager_state", `${this.currencies["money"]};${(auto_restart_on) ? 1 : 0};${(auto_pilot_on) ? 1 : 0};${this.currencies["photons"]};${this.prestiged}`);
         var upgrade_string = "";
         for (var i = 0; i < this.buttons.length; i++) {
-            upgrade_string += this.buttons[i][0].upgrade_amount + ";";
+            upgrade_string += this.buttons[i].upgrade_amount + ";";
         }
         localStorage.setItem("upgrades", upgrade_string);
     }
@@ -352,8 +326,8 @@ class GameManager {
 
         }
 
-        this.currency = end_currency;
-        this.photons = end_photons;
+        this.currencies["money"] = end_currency;
+        this.currencies["photons"] = end_photons;
 
     }
 
