@@ -1,29 +1,3 @@
-class PurchaseButton {
-
-    constructor(starting_value, price_multiplier, max_level) {
-
-        this.price = starting_value;
-        this.price_multiplier = price_multiplier;
-        this.max_level = max_level
-        this.upgrade_amount = 0;
-
-    }
-
-    on_click() {
-
-        if (manager.currency >= this.price && this.upgrade_amount < this.max_level) {
-            manager.currency -= this.price;
-            this.price *= this.price_multiplier;
-            this.upgrade_amount += 1;
-            return true;
-        }
-
-        return false;
-
-    }
-
-}
-
 function round_to_dp(places, number) {
     return Math.round(number * (10 ** places)) / (10 ** places);
 }
@@ -66,7 +40,7 @@ function uncover_real_reset_button() {
 }
 
 function give_money(amount) {
-    manager.currency += amount;
+    manager.currencies["money"] += amount;
 }
 
 function sleep(time) {
