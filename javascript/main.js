@@ -61,7 +61,7 @@ function gameLoop(running, food_position) {
         } else {
 
             //apply scores to money
-            manager.currency += (manager.snake.score ** manager.multipliers["score_exponent"]) * manager.multipliers["score_multiplier"];
+            manager.currencies["money"] += (manager.snake.score ** manager.multipliers["score_exponent"]) * manager.multipliers["score_multiplier"];
 
             //update labels
             manager.update_GUI();

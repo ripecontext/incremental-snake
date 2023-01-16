@@ -270,7 +270,7 @@ class GameManager {
         const auto_restart_on = document.getElementById("auto_restart_checkbox").checked;
         const auto_pilot_on = document.getElementById("autopilot_checkbox").checked;
 
-        this.photons += 1;
+        this.currencies["photons"] += 1;
         this.prestiged += 1;
 
         this.save_data()
